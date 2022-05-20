@@ -8,7 +8,7 @@ The target is the bacterial enzyme [MurD](https://github.com/opensourceantibioti
 
 ## Available data
 
-### Open Source Antibiotics
+### Open Source Antibiotics
 * Structures of the four fragments (349, 373, 374, 378) bound to the **allosteric** MurD site of interest: [Fragalysis](https://fragalysis.diamond.ac.uk/viewer/react/preview/target/MURD), [Wiki](https://github.com/opensourceantibiotics/murligase/wiki/Initial-MurD-Hits), [PDB files](https://github.com/opensourceantibiotics/murligase/tree/master/docs/pdbs_forNGL/MurD). Structures correspond to *Streptococcus agalactiae* MurD.
 * An *Escherichia coli* MurD structure (PDB [3UAG](https://www.rcsb.org/structure/3UAG)) without fragments.
 * The *Spreptococcus agalactiae* MurD structure (PDB [3LK7](https://www.rcsb.org/structure/3lk7)).
