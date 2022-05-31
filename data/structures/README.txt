@@ -1,1 +1,3 @@
-EColiMurD_substrate.pdb and SagaMurD_apo.pdb have been superposed to the Frags structures
+- EColiMurD_substrate.pdb and SagaMurD_apo.pdb have been superposed to the Frags structures
+- Cl atom has been manually removed from 349_ligand_only.pdb
+- Entries "1" of 373_ligand_only.pdb and 374_ligand_only.pdb were manually removed

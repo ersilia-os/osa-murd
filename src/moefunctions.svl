@@ -1,0 +1,31 @@
+function ph4_ClusterMDB;
+function db_Open;
+function db_ImportSD;
+function db_ExportSD;
+function StructurePreparation;
+//local 
+function cluster_ligands [filename,mdbfilename,outfilename]
+if length findmatch ['*.*',filename] then //file found
+                write ['FILE found: Reference file {} opened\n',filename];
+        else
+                write ['FILE {} not found\n',filename];
+exit 'file not found';
+endif
+db_Open [mdbfilename,'create'];
+db_ImportSD [mdbfilename,filename,'mol'];
+ph4_ClusterMDB [mdbfilename,'FP:MACCS','tanimoto',[overlap: 0.90, sim:0.90]];
+db_ExportSD [mdbfilename,outfilename,[]];
+endfunction
+
+//local
+function proteinprep[filename,outfilename,logfile]
+if length findmatch ['*.*',filename] then //file found
+                write ['FILE found: Reference file {} opened\n',filename];
+        else
+                write ['FILE {} not found\n',filename];
+exit 'file not found';
+endif
+ReadPDB filename;
+local issues = StructurePreparation [cmd:'cli',reportName:logfile,batch_protonate3d:1];
+WriteTriposMOL2 outfilename;
+endfunction
