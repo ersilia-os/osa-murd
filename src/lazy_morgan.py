@@ -38,7 +38,7 @@ def featurizer(smiles):
 
 class MorganBinaryClassifier(object):
 
-    def __init__(self, time_budget_sec=20, estimator_list=["rf"]):
+    def __init__(self, time_budget_sec=120, estimator_list=None):
         self.time_budget_sec=time_budget_sec
         self.estimator_list=estimator_list
         self.model = None
