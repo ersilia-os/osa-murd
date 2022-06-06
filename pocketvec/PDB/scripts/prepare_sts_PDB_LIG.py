@@ -15,6 +15,7 @@ from rdkit.Chem import rdFreeSASA
 from rdkit import Chem
 from rdkit.Chem.Descriptors import MolWt
 from collections import Counter
+import pandas as pd
 
 #sys.stderr.write(Bio.__version__)
 #sys.stderr.flush()
@@ -29,8 +30,74 @@ input_pickle = pickle.load(open(filename, 'rb'))
 
 infos = input_pickle[task_id][0]  # Information
 
-path_to_summary = os.path.join("/aloy/home/acomajuncosa/PocketVec_v2/kinase/PDB/LIG/preprocess/summary", "summary_" + str(task_id) + ".tsv")
-dict_coverages = pickle.load(open("/aloy/home/acomajuncosa/PocketVec_v2/kinase/PDB/dict_coverages.pkl", "rb"))
+path_to_summary = os.path.join("/aloy/home/acomajuncosa/MurD/GitHub/summary", "summary_" + str(task_id) + ".tsv")
+
+
+def get_centroid(infile, outfile):
+    
+    parser = PDBParser()
+    structure = parser.get_structure("lig", infile)
+
+    res = [i for i in structure.get_residues()][0]
+    ligatoms = [at.coord for at in res.get_atoms()]
+    x = np.mean(np.array(ligatoms)[:,0])
+    y = np.mean(np.array(ligatoms)[:,1])
+    z = np.mean(np.array(ligatoms)[:,2])
+    center = np.array([x, y, z], dtype=np.float32)
+
+    x, y, z = str(round(x, 3)), str(round(y, 3)), str(round(z, 3))
+    ctr = " "*(8-len(x)) + x + " "*(8-len(y)) + y + " "*(8-len(z)) + z
+    text = """HEADER\nHETATM    1   C  CTR A   1    """ + ctr + """  1.00  1.00           C\nEND"""
+
+    with open(outfile, "w") as f:
+        f.write(text)
+
+
+def SASA(prot, lig): 
+
+    # Protonation gives too many issues. Avoid it
+    
+    #compute ligand SASA
+    #lig_h = Chem.rdmolops.AddHs(lig, addCoords=True, explicitOnly=True)
+    lig_h = lig
+    # Get Van der Waals radii (angstrom)
+    ptable = Chem.GetPeriodicTable()
+    radii = [ptable.GetRvdw(atom.GetAtomicNum()) for atom in lig_h.GetAtoms()]
+    # Compute solvent accessible surface area
+    lig_sasa = rdFreeSASA.CalcSASA(lig_h, radii)
+
+    # Join protein & ligand
+    comp = Chem.CombineMols(prot, lig)
+    comp_h = comp
+    #comp_h = Chem.AddHs(comp, addCoords=True)
+    # Get Van der Waals radii (angstrom)
+    ptable = Chem.GetPeriodicTable()
+    radii = [ptable.GetRvdw(atom.GetAtomicNum()) for atom in comp_h.GetAtoms()]
+    # Compute solvent accessible surface area
+    comp_sasa = rdFreeSASA.CalcSASA(comp_h, radii)
+    comp_lig = Chem.GetMolFrags(comp_h, asMols=True,  sanitizeFrags=True)
+    comp_lig = [i for i in comp_lig if lig_h.GetNumHeavyAtoms() == i.GetNumHeavyAtoms()][0]
+    
+    lig_sasa_free = 0
+    for a in lig_h.GetAtoms():
+        lig_sasa_free += float(a.GetProp("SASA"))
+
+    lig_sasa_bound = 0
+    for a in comp_lig.GetAtoms():
+        lig_sasa_bound += float(a.GetProp("SASA"))
+        
+    return round(lig_sasa_free, 3), round(lig_sasa_bound, 3)
+
+
+pdbcode_to_inchi = pd.read_csv("/aloy/home/acomajuncosa/MurD/GitHub/osa-murd/data/PDB/mapping/Components-inchi.ich.txt", sep="\t", header=None, names=['inchi', 'PDB', 'name'], usecols=[0,1])  
+# From df to dict's  // PDB-LIGs
+d = {}
+for i,j in zip(pdbcode_to_inchi['inchi'], pdbcode_to_inchi['PDB']):
+    if str(j) == 'nan': j = "NA"
+    d[str(j)] = i
+pdbcode_to_inchi = d; del d
+
+
 
 
 with open(path_to_summary, "w") as outfile:
@@ -38,188 +105,130 @@ with open(path_to_summary, "w") as outfile:
 
     for info in infos:
 
-        sys.stderr.write(str(info) + "\n\n\n\n")
-        sys.stderr.flush()
-
-
-        pdb = info['PDB']
-        uniprot = info['Uniprot']
-        pfam = info['Pfam']
-        intlig = info['Int Lig']
-        chain = info['Chain']
-        st_res = int(info['St_res'])
-        end_res = int(info['End_res'])
-
-        domain = '_'.join([uniprot, pfam, str(st_res), str(end_res)])
-
-        path = os.path.join("/aloy/home/acomajuncosa/PocketVec_v2/kinase/PDB/LIG/preprocess/data/", domain)
 
         try:
+
+
+            pdb = info[0]
+            int_lig = info[1]
+            lig = info[2]
+            het = info[3]
+
+            path = os.path.join("/aloy/home/acomajuncosa/MurD/GitHub/structures", pdb[1:3], pdb + "_" + int_lig)
             if os.path.exists(path) is False: os.makedirs(path)
-        except:
-            pass
+            os.chdir(os.path.join(path))
 
-
-        #####################################
-        #-----PARSING PDB & ACCESSIBILITY----
-        #####################################
-
-
-        label = domain + "_" + pdb + "_" + chain + "_" + intlig
-        got_pdb = False
-
-        if True:#try:
-
-            ## 1. Create directory & download pdb structure
-            if os.path.exists(os.path.join(path, label)) is False: os.makedirs(os.path.join(path, label))
-            os.chdir(os.path.join(path, label))
-
+            ### 1. Create directory & download pdb structure
             with gzip.open('/aloy/home/acomajuncosa/programs/localpdb/mirror/pdb/' + pdb[1:3].lower() + '/pdb' + pdb.lower() + '.ent.gz', 'rb') as f_in:
-                with open(os.path.join(path, label, pdb + ".pdb"), 'wb') as f_out:
+                with open(os.path.join(path, pdb + ".pdb"), 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
 
-            time.sleep(1)
-            got_pdb = True
+
+            ligands_to_remove = ['W']
+            ligands_to_remove.append("H_" + " "*(3-len(int_lig)) + int_lig)
+            ligands_to_remove.append("H_" + int_lig + " "*(3-len(int_lig)))
+
+            if type(lig) == list:
+                for l in lig:
+                    ligands_to_remove.append("H_" + " "*(3-len(l)) + l)
+                    ligands_to_remove.append("H_" + l + " "*(3-len(l)))
+                ligands_to_remove = set(ligands_to_remove)
 
 
-            ## 2.1. Remove waters
-            command = 'python /aloy/home/acomajuncosa/programs/structureChecking/bin/check_structure -i ' + pdb + '.pdb -o ' + pdb + '_water.pdb --force_save --non_interactive water --remove Yes'
-            o = os.popen(command).read()
-            sys.stderr.write(o + "\n\n\n")
-            sys.stderr.flush()
+            # 2. Remove water molecules and ligands // but not non std residues!
+            parser = PDBParser()
+            path_in = os.path.join(path, pdb + ".pdb")
+            path_out = path
+            structure = parser.get_structure("st", path_in)
 
-
-            ## 2.2. Remove hydrogens
-            command = 'python /aloy/home/acomajuncosa/programs/structureChecking/bin/check_structure -i ' + pdb + '_water.pdb -o ' + pdb + '_hydrogens.pdb --force_save --non_interactive rem_hydrogen --remove Yes'
-            o = os.popen(command).read()
-            sys.stderr.write(o + "\n\n")
-            sys.stderr.flush()
-
-
-            ## 2.3. Select occupancies
-            command = 'python /aloy/home/acomajuncosa/programs/structureChecking/bin/check_structure -i ' + pdb + '_hydrogens.pdb' + ' -o ' + pdb  + '_altloc.pdb --force_save --non_interactive altloc --select occupancy'
-            o = os.popen(command).read()
-            sys.stderr.write(o + "\n\n")
-            sys.stderr.flush()
-
-
-            ## 3. Select domain
-            class DomSelect(Select):
+            class remove_ligs(Select):
                 def accept_residue(self, residue):
-                    if residue.get_id()[1] in residues and residue.get_parent().id == chain:
+                    if residue.get_id()[0] not in ligands_to_remove:
                         return 1
                     else:
                         return 0
 
-            residues = np.array([dict_coverages["_".join([pdb.lower(), uniprot, chain, pfam, str(st_res), str(end_res)])][i] for i in range(st_res, end_res+1) if dict_coverages["_".join([pdb.lower(), uniprot, chain, pfam, str(st_res), str(end_res)])][i][0] is not None])[:,0]
-            residues = set([int(i) for i in residues])
-
-            parser = PDBParser()
-            structure = parser.get_structure("st", os.path.join(path, label, pdb + "_altloc.pdb"))[0]  # Take only the first model. Trivial for X-ray, only 1st for NMR
             io = PDBIO()
             io.set_structure(structure)
-            io.save(os.path.join(os.path.join(path, label, label + ".pdb")), DomSelect())
+            io.save(os.path.join(path, pdb + "_st.pdb"), remove_ligs())
 
+            # 3. Remove hydrogens
+            command = 'python /aloy/home/acomajuncosa/programs/structureChecking/bin/check_structure -i ' + os.path.join(path_out , pdb + '_st.pdb') + ' -o ' + os.path.join(path_out , pdb + '_hydrogens.pdb') + ' --force_save --non_interactive rem_hydrogen --remove Yes'
+            o = os.popen(command).read()
+            sys.stderr.write(o + "\n\n")
+            sys.stderr.flush()
 
-            ## 4. Select ligands and save them separately
-            pdb_structure = parser.get_structure("st", os.path.join(path, label, pdb + ".pdb"))[0]  # Take only the first model. Trivial for X-ray, only 1st for NMR
-            ligands = [i for i in pdb_structure.get_residues() if i.get_resname() == intlig]  # Repeated entities of the same ligand (e.g 'YDJ repeated twice')
+            # 4. Select occupancies
+            command = 'python /aloy/home/acomajuncosa/programs/structureChecking/bin/check_structure -i ' + os.path.join(path_out , pdb + '_hydrogens.pdb') + ' -o ' + os.path.join(path_out , pdb + '_altloc.pdb') + ' --force_save --non_interactive altloc --select occupancy'
+            o = os.popen(command).read()
+            sys.stderr.write(o + "\n\n")
+            sys.stderr.flush()
 
-            class LigSelect(Select):
-                def accept_residue(self, residue):
-                    if residue == ligand:
-                        return 1
-                    else:
-                        return 0
-
-            def SASA(prot, lig):
-    
-                # compute ligand SASA
-                lig_h = Chem.AddHs(lig, addCoords=True)
-
-                # Get Van der Waals radii (angstrom)
-                ptable = Chem.GetPeriodicTable()
-                radii = [ptable.GetRvdw(atom.GetAtomicNum()) for atom in lig_h.GetAtoms()]
-
-                # Compute solvent accessible surface area
-                lig_sasa = rdFreeSASA.CalcSASA(lig_h, radii)
-                
-                # Join protein & ligand
-                comp = Chem.CombineMols(prot, lig)
-                comp_h = Chem.AddHs(comp, addCoords=True)
-
-                # Get Van der Waals radii (angstrom)
-                ptable = Chem.GetPeriodicTable()
-                radii = [ptable.GetRvdw(atom.GetAtomicNum()) for atom in comp_h.GetAtoms()]
-
-                # Compute solvent accessible surface area
-                comp_sasa = rdFreeSASA.CalcSASA(comp_h, radii)
-                
-                comp_lig = Chem.GetMolFrags(comp_h, asMols=True,  sanitizeFrags=True)
-                comp_lig = [i for i in comp_lig if MolWt(i) == MolWt(lig_h)]
-                # Avoid including smaller ligands than expected (e.g. 7PE in 5EHY)
-                at = [i.GetAtomicNum() for i in lig.GetAtoms()]
-                if len(comp_lig) != 1 or Counter(at)[6] < 5:
-                    return np.nan, np.nan
-                else:
-                    comp_lig = comp_lig[0]
-
-                lig_sasa_free = 0
-                for a in lig_h.GetAtoms():
-                    lig_sasa_free += float(a.GetProp("SASA"))
-
-                lig_sasa_bound = 0
-                for a in comp_lig.GetAtoms():
-                    lig_sasa_bound += float(a.GetProp("SASA"))
-
-                return round(lig_sasa_free, 3), round(lig_sasa_bound, 3)
+            shutil.copyfile(os.path.join(path_out , pdb + '_altloc.pdb'), os.path.join(path_out , pdb + '_' + int_lig + '.pdb'))
 
 
 
-            for count, ligand in enumerate(ligands):
+            parser = PDBParser()
+            structure = parser.get_structure("st", os.path.join(path, pdb + ".pdb"))
+            interesting_ligands = [i for i in structure.get_residues() if i.get_resname() == int_lig]
+
+
+            for c, interesting_ligand in enumerate(interesting_ligands):
 
                 try:
-
-                    # Save ligand
+                
+                    # 5. Select ligand and save it separately
+                    class LigSelect(Select):
+                        def accept_residue(self, residue):
+                            if residue == interesting_ligand:
+                                return 1
+                            else:
+                                return 0
+                            
                     io = PDBIO()
-                    io.set_structure(pdb_structure)
-                    io.save(os.path.join(os.path.join(path, label, intlig + "_" + str(count) + ".pdb")), LigSelect())
-                    #command = 'obabel ' + os.path.join(path, label, intlig + "_" + str(count) + ".pdb") + ' -O ' + os.path.join(path, label, intlig + "_" + str(count) + ".sdf")
+                    io.set_structure(structure)
+                    io.save(os.path.join(path, int_lig + "_" + str(c) + ".pdb"), LigSelect())
+                    #command = 'obabel ' + os.path.join(path, int_lig + "_" + str(c) + ".pdb") + " -O " + os.path.join(path, int_lig + "_" + str(c) + ".sd")
                     #os.system(command)
-                    #os.remove(os.path.join(path, label, intlig + "_" + str(count) + ".pdb"))
-
-                    # Save centroid
-                    res = [i for i in pdb_structure.get_residues() if i == ligand][0]
-                    ligatoms = [at.coord for at in res.get_atoms()]
-                    x = np.mean(np.array(ligatoms)[:,0])
-                    y = np.mean(np.array(ligatoms)[:,1])
-                    z = np.mean(np.array(ligatoms)[:,2])
-                    center = np.array([x, y, z], dtype=np.float32)
-
-                    x, y, z = str(round(x, 3)), str(round(y, 3)), str(round(z, 3))
-                    ctr = " "*(8-len(x)) + x + " "*(8-len(y)) + y + " "*(8-len(z)) + z
-                    text = """HEADER\nHETATM    1   C  CTR A   1    """ + ctr + """  1.00  1.00           C\nEND"""
-
-                    with open(os.path.join(path, label, intlig + "_CTR_" + str(count) + ".pdb"), "w") as f:
-                        f.write(text)
+                    
+                    # Get centroid
+                    get_centroid(os.path.join(path, int_lig + "_" + str(c) + ".pdb"), os.path.join(path, int_lig + "_" + str(c) + "_centroid.pdb"))
+                    command = 'obabel ' + os.path.join(path, int_lig + "_" + str(c) + "_centroid.pdb") + " -O " + os.path.join(path, int_lig + "_" + str(c) + "_centroid.sd")
+                    os.system(command)
 
 
                     # Get SASA
-                    prot = Chem.MolFromPDBFile(os.path.join(path, label, label + ".pdb"))
-                    lig = Chem.MolFromPDBFile(os.path.join(path, label, intlig + "_" + str(count) + ".pdb"))
+                    prot = Chem.MolFromPDBFile(os.path.join(path, pdb + "_" + int_lig + ".pdb"))
+                    lig = Chem.MolFromPDBFile(os.path.join(path, int_lig + "_" + str(c) + ".pdb"))
 
-                    lig_sasa_free, lig_sasa_bound = SASA(prot, lig)
-                    acc = round(lig_sasa_bound/lig_sasa_free, 3)
+                    if lig.GetNumHeavyAtoms() == Chem.MolFromInchi(pdbcode_to_inchi[int_lig]).GetNumHeavyAtoms():
+                        
+                        lig_sasa_free, lig_sasa_bound = SASA(prot, lig)
 
-                    outfile.write("\t".join([domain, pdb, chain, intlig, str(count), str(lig_sasa_free), str(lig_sasa_bound), str(acc)]) + "\n")
+                    else:
+                        
+                        lig_sasa_free, lig_sasa_bound = np.nan, np.nan
+                        
+                    acc = round(lig_sasa_bound / lig_sasa_free, 3)
+
+                    # Write results
+                    outfile.write("\t".join([pdb, int_lig, str(c), str(lig_sasa_free), str(lig_sasa_bound), str(acc)]) + "\n")
 
                 except:
 
-                    outfile.write("\t".join([domain, pdb, chain, intlig, str(count), str('failed'), str('failed'), str('failed')]) + "\n")
+                    # Write results
+                    outfile.write("\t".join([pdb, int_lig, str(c), 'failed2', 'failed2', 'failed2']) + "\n")
+
+        except:
+
+            # Failed in the starting steps..
+            outfile.write("\t".join([pdb, int_lig, str(c), 'failed1', 'failed1', 'failed1']) + "\n")
 
 
+
+        path = os.path.join("/aloy/home/acomajuncosa/MurD/GitHub/structures", pdb[1:3])
         os.chdir(path)   
-        tar = tarfile.open(label + ".tar.gz", "w:gz")
-        tar.add(label)
-        shutil.rmtree(label)
+        tar = tarfile.open(pdb + "_" + int_lig + ".tar.gz", "w:gz")
+        tar.add(pdb + "_" + int_lig)
+        shutil.rmtree(pdb + "_" + int_lig)
         tar.close()
