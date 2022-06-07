@@ -139,7 +139,7 @@ with open(path_to_summary, "w") as outfile:
             parser = PDBParser()
             path_in = os.path.join(path, pdb + ".pdb")
             path_out = path
-            structure = parser.get_structure("st", path_in)
+            structure = parser.get_structure("st", path_in)[0] # Take only the first model. Trivial for X-ray, only 1st for NMR
 
             class remove_ligs(Select):
                 def accept_residue(self, residue):
@@ -222,7 +222,7 @@ with open(path_to_summary, "w") as outfile:
         except:
 
             # Failed in the starting steps..
-            outfile.write("\t".join([pdb, int_lig, str(c), 'failed1', 'failed1', 'failed1']) + "\n")
+            outfile.write("\t".join([pdb, int_lig, "-", 'failed1', 'failed1', 'failed1']) + "\n")
 
 
 
