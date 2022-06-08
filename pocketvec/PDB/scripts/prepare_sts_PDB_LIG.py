@@ -141,6 +141,16 @@ with open(path_to_summary, "w") as outfile:
             path_out = path
             structure = parser.get_structure("st", path_in)[0] # Take only the first model. Trivial for X-ray, only 1st for NMR
 
+            # Take only the first model
+            io = PDBIO()
+            io.set_structure(structure)
+            io.save(os.path.join(path, pdb + "_model.pdb"))
+
+            parser = PDBParser()
+            path_in = os.path.join(path, pdb + "_model.pdb")
+            path_out = path
+            structure = parser.get_structure("st", path_in)
+
             class remove_ligs(Select):
                 def accept_residue(self, residue):
                     if residue.get_id()[0] not in ligands_to_remove:
@@ -169,7 +179,7 @@ with open(path_to_summary, "w") as outfile:
 
 
             parser = PDBParser()
-            structure = parser.get_structure("st", os.path.join(path, pdb + ".pdb"))
+            structure = parser.get_structure("st", os.path.join(path, pdb + "_model.pdb"))
             interesting_ligands = [i for i in structure.get_residues() if i.get_resname() == int_lig]
 
 
@@ -212,17 +222,17 @@ with open(path_to_summary, "w") as outfile:
                     acc = round(lig_sasa_bound / lig_sasa_free, 3)
 
                     # Write results
-                    outfile.write("\t".join([pdb, int_lig, str(c), str(lig_sasa_free), str(lig_sasa_bound), str(acc)]) + "\n")
+                    outfile.write("\t".join([pdb, int_lig, str(c), interesting_ligand.get_parent().id, str(lig_sasa_free), str(lig_sasa_bound), str(acc)]) + "\n")
 
                 except:
 
                     # Write results
-                    outfile.write("\t".join([pdb, int_lig, str(c), 'failed2', 'failed2', 'failed2']) + "\n")
+                    outfile.write("\t".join([pdb, int_lig, str(c), interesting_ligand.get_parent().id, 'failed2', 'failed2', 'failed2']) + "\n")
 
         except:
 
             # Failed in the starting steps..
-            outfile.write("\t".join([pdb, int_lig, "-", 'failed1', 'failed1', 'failed1']) + "\n")
+            outfile.write("\t".join([pdb, int_lig, "-", "-", 'failed1', 'failed1', 'failed1']) + "\n")
 
 
 
