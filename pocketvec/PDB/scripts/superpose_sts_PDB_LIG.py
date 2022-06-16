@@ -174,118 +174,167 @@ for file in sorted(os.listdir(vis_path)):
         coords.append([coord[0], coord[1], coord[2]])
 
 coords = np.array(coords)
+labs = np.array(labs)
 
 
 ### 5. CLUSTERING
 
-if len(coords) > 1:
+# Some functions for clustering
 
-    # Clustering
-    clustering = AgglomerativeClustering(distance_threshold=12, n_clusters=None,
-     affinity='euclidean', linkage='complete').fit(coords)
+def check_cond2(cluster_points, max_centroid):
+    # Get new centroid
+    ctr = calculate_centroid(cluster_points)
+    dist = max(pairwise_distances(ctr.reshape(1, -1), cluster_points)[0])
+    return dist < max_centroid
 
+def get_min_dist_between_clusters(points1, points2):
+    return min([j for i in pairwise_distances(points1, points2) for j in i])
+
+def calculate_centroid(arr):
+    arr = np.array(arr)
+    length = arr.shape[0]
+    sum_x = np.sum(arr[:, 0])
+    sum_y = np.sum(arr[:, 1])
+    sum_z = np.sum(arr[:, 2])
+    return np.array([sum_x/length, sum_y/length, sum_z/length])
+
+
+def clustering(coords, min_newpoint, max_centroid):
+
+    # Get info
+    coords = {i: j for i, j in zip(range(len(coords)), coords)}
+    # clusters = {i: j.reshape(1, -1) for i, j in zip(range(len(coords)), coords)}
+    real_clusters = {}
+    clust_gen = True
+    clust_count = -1
+
+    while clust_gen and len([i for i in coords if i not in real_clusters]) > 1:
+
+        # Get minimum distance between points
+        labels = [i for i in coords if i not in real_clusters]
+        distances = pairwise_distances([coords[i] for i in coords if i not in real_clusters])
+        mindist = {}
+        for c1, row in zip(labels, distances):
+            for c2, dist in zip(labels, row):
+                c1, c2 = str(c1), str(c2)
+                if c1 + "_" + c2 not in mindist and c2 + "_" + c1 not in mindist and c1 != c2:
+                    mindist[c1 + "_" + c2] = dist
+
+        # Get the first centroid
+        minimum = sorted(mindist, key=lambda x: mindist[x])[0]
+        # print(mindist[minimum], clust_count+1)
+        # print(clust_gen, cont)
+
+        if mindist[minimum] < min_newpoint:
+            #print("in!")
+            clust_count += 1
+            real_clusters[int(minimum.split("_")[0])] = clust_count
+            real_clusters[int(minimum.split("_")[1])] = clust_count
+            if len([i for i in coords if i not in real_clusters]) > 0:
+                clust_gen = True
+                cont = True
+            else:
+                clust_gen = False
+                cont = False
+
+        else:
+            clust_gen = False
+            cont = False
+
+        while cont == True and len([i for i in coords if i not in real_clusters]) > 0:
+
+            cluster_points = np.array([coords[i] for i in real_clusters if real_clusters[i] == clust_count])
+            cluster_labels = np.array([i for i in real_clusters if real_clusters[i] == clust_count])
+            centroid = calculate_centroid(cluster_points)
+
+            ### Increase cluster
+            # Get the min external point to cluster points
+            increasing = {}
+            labels = np.array([i for i in coords if i not in real_clusters])
+            for cluster_label, cluster_point in zip(cluster_labels, cluster_points):
+                dist = pairwise_distances(cluster_point.reshape(1, -1), [coords[i] for i in coords if i not in real_clusters])[0]
+                ind = dist.argmin()
+                increasing[cluster_label] = [dist[ind], labels[ind]]
+
+
+            increasing = np.array([increasing[i] for i in increasing])
+            dist, lab = increasing[:,0], increasing[:,1]
+            ind = dist.argmin()
+            dist, lab = dist[ind], int(lab[ind])
+
+            # Check condition 1 // cond1
+            if dist < min_newpoint:
+                cond1 = True
+            else:
+                cond1 = False
+
+
+            # Check condition 2 // cond2
+            if cond1 == True:
+                cluster_points_check = np.array([list(coords[i]) for i in real_clusters if real_clusters[i] == clust_count] + [list(coords[lab])])
+                cond2 = check_cond2(cluster_points_check, max_centroid)
+
+            if cond1 == True and cond2 == True:
+                real_clusters[lab] = clust_count
+            else:
+                cont = False
+
+    return real_clusters, clust_count
+
+
+def assign_outliers(clust_count, real_clusters, coords):        
+
+    clust_count += 1
+    coords = {i: j for i, j in zip(range(len(coords)), coords)}
+
+    for i in sorted(coords):
+        if i not in real_clusters:
+            real_clusters[i] = clust_count
+            clust_count += 1
+            
+    return real_clusters
+
+
+def pretty_clusters(real_clusters, vis_path, path_to_reports):
+    
+    clst = {}
+
+    for numb_cluster in set(sorted([real_clusters[i] for i in real_clusters])):
+        for st in real_clusters:
+            if real_clusters[st] == numb_cluster:
+                clst[labs[st]] = numb_cluster
+                
     # Pretty print
-    for cluster in sorted(set(clustering.labels_)):
+    for cluster in sorted(set([real_clusters[i] for i in real_clusters])):
         with open(os.path.join(vis_path, "cluster_" + str(cluster) + ".pdb"), "w") as f:
             f.write("HEADER\n")
-            for lab, numb in zip(labs, clustering.labels_):
-                if numb == cluster:
+            for lab in clst:
+                if clst[lab] == cluster:
                     l = get_line_point(os.path.join(vis_path, lab))
                     f.write(l)
             f.write("END")
 
     # Print report(s)
     with open(os.path.join(path_to_reports, uniprot + ".tsv"), "w") as f:
-        f.write("\n".join(["\t".join([i,str(j)]) for i,j in zip(labs, clustering.labels_)]))
+        f.write("\n".join(["\t".join([i,str(clst[i])]) for i in clst]))
 
-    report = {i:j for i,j in zip(labs, clustering.labels_)}
+    report = {i:clst[i] for i in clst}
     pickle.dump(report, open(os.path.join(path_to_reports, uniprot + ".pkl"), "wb"))
 
 
-else:  # In case only one st in this uniprot
+# Actual clustering
 
-    # Pretty print
-    with open(os.path.join(vis_path, "cluster_" + str(0) + ".pdb"), "w") as f:
-        f.write("HEADER\n")
-        for lab, numb in zip(labs, [0]):
-            l = get_line_point(os.path.join(vis_path, lab))
-            f.write(l)
-        f.write("END")
+min_newpoint = 5
+max_centroid = 18
 
-    # Print report(s)
-    with open(os.path.join(path_to_reports, uniprot + ".tsv"), "w") as f:
-        f.write("\n".join(["\t".join([i,str(j)]) for i,j in zip(labs, [0])]))
+if len(coords) > 1:
 
-    report = {i:j for i,j in zip(labs,[0])}
-    pickle.dump(report, open(os.path.join(path_to_reports, uniprot + ".pkl"), "wb"))
+    real_clusters, clust_count = clustering(coords, min_newpoint, max_centroid)
+    real_clusters = assign_outliers(clust_count, real_clusters, coords)
+    pretty_clusters(real_clusters, vis_path, path_to_reports)
 
+else:
 
-
-
-
-### 6. CHECK FOR CLASHES 
-
-# Get the nonredundant set of pairs ==> (A, B, C, D): (A,B), (A,C), (A,D), (B,C), (B,D), (C,D)
-def get_nonredundant_pairs(ctr):
-    pairs = []
-    for i in ctrs:
-        for j in ctrs:
-            if i != j and " ".join([i, j]) not in pairs and " ".join([j, i]) not in pairs:
-                pairs.append(" ".join([i, j]))
-    return pairs
-
-
-def check_clash(points, locations, minimum=2):
-    dists = np.array([min(i) for i in pairwise_distances(points, locations, metric='euclidean')])
-    if min(dists) < minimum:
-        return True
-    else:
-        return False
-
-
-def check_conflict(loc1, loc2, path_to_st):
-    
-    # Load loc from all atoms in st
-    st = PDBParser().get_structure("st", path_to_st)
-    atoms_prot = [i.coord for i in st.get_atoms()]
-    
-    # Calculate points to check
-    thr = 1  # point every 1 A
-    incr = np.linalg.norm(loc1-loc2)
-    n_spaces = int(incr/thr) + 2
-    points_to_check = np.linspace(loc1, loc2, n_spaces)
-    
-    # Check clashes with points
-    conflict = check_clash(points_to_check, atoms_prot)
-    
-    return conflict
-
-
-clusters = pickle.load(open(os.path.join(path_to_reports, uniprot + ".pkl"), "rb"))
-numb_clusters = sorted(set([clusters[i] for i in clusters]))
-report_conflicts = {}
-
-for numb_cluster in numb_clusters:
-    ctrs, loc = [], {} 
-    
-    # Get how many centroids are clustered in numb_clustered
-    for ctr in clusters:
-        if clusters[ctr] == numb_cluster:
-            ctrs.append(ctr)
-            
-    # Get all pairs of distances
-    pairs = get_nonredundant_pairs(ctr)
-    for ctr in ctrs:
-        loc[ctr] = get_3d_points(os.path.join(vis_path, ctr))
-        
-    # Check conflicts for all pairs of centroids
-    c = False
-    for pair in pairs:
-        ctr1, ctr2 = loc[pair.split()[0]], loc[pair.split()[1]]
-        conflict = check_conflict(ctr1, ctr2, os.path.join(vis_path, "cluster_REFERENCE.pdb"))
-        if conflict is True:
-            c = True
-            break
-    report_conflicts[numb_cluster] = [c, len(ctrs)]
-
-pickle.dump(report_conflicts, open(os.path.join(path_to_reports, uniprot + "_conflicts.pkl"), "wb"))
+    real_clusters = {}
+    real_clusters[0] = 0
+    pretty_clusters(real_clusters, vis_path, path_to_reports)
