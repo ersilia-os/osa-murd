@@ -1,0 +1,4 @@
+CN1CCN(CC1)c1ccc(C#N)cc1	349_ligand_only.pdb
+CN1CCN(CC1)C(=O)Nc1ccc(F)cc1	373_ligand_only.pdb
+CC(CO)(CO)NC(=O)Nc1ccccc1	374_ligand_only.pdb
+CC(C)C(=O)Nc1cccc(C#N)c1	378_ligand_only.pdb
