@@ -4,6 +4,7 @@ import numpy as np
 
 from rdkit.Chem import rdMolDescriptors as rd
 from rdkit import Chem
+from rdkit.Chem import AllChem
 
 RADIUS = 3
 NBITS = 2048
@@ -27,6 +28,7 @@ class Descriptor(object):
         return clip_sparse(v, self.nbits)
 
 
+
 def featurizer(smiles):
     d = Descriptor()
     X = np.zeros((len(smiles), NBITS))
@@ -38,7 +40,7 @@ def featurizer(smiles):
 
 class MorganBinaryClassifier(object):
 
-    def __init__(self, time_budget_sec=600, estimator_list=None):
+    def __init__(self, time_budget_sec=600, estimator_list=["rf"]):
         self.time_budget_sec=time_budget_sec
         self.estimator_list=estimator_list
         self.model = None
