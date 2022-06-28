@@ -1,0 +1,390 @@
+02:03:18 | DEBUG    | Is fetched: True
+02:03:18 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:18 | DEBUG    | Setting AutoService for eos2r5a
+02:03:18 | DEBUG    | No service class provided, deciding automatically
+02:03:18 | DEBUG    | Service class file exists in folder /home/mduranfrigola/eos/repository/eos2r5a/20220628000742_00D2FD/service_class.txt
+02:03:18 | DEBUG    | Service class: conda
+02:03:18 | DEBUG    | Cleaning temp dir
+02:03:18 | DEBUG    | Flushing temporary directory /tmp/ersilia-lp20p949
+02:03:18 | DEBUG    | Flushing temporary directory /tmp/ersilia-tvr6oixa
+02:03:18 | DEBUG    | Flushing temporary directory /tmp/ersilia-i5_hi7iv
+02:03:18 | DEBUG    | Flushing temporary directory /tmp/ersilia-ij66nfpz
+02:03:18 | DEBUG    | Flushing temporary directory /tmp/ersilia-481y4q87
+02:03:18 | DEBUG    | Flushing temporary directory /tmp/ersilia-9v6j2ixu
+02:03:18 | DEBUG    | Silencing docker containers if necessary
+02:03:19 | DEBUG    | Closing session /home/mduranfrigola/eos/session.json
+02:03:19 | DEBUG    | Opening session /home/mduranfrigola/eos/session.json
+02:03:19 | DEBUG    | Cleaning processes before serving
+02:03:19 | DEBUG    | /home/mduranfrigola/eos/tmp/eos7pw8.pid
+02:03:19 | DEBUG    | Cleaning [426475] processes
+02:03:19 | DEBUG    | Cleaning temp dir
+02:03:19 | DEBUG    | Cleaning temp dir
+02:03:19 | DEBUG    | Silencing docker containers if necessary
+02:03:19 | DEBUG    | Trying to serve model with BentoML locally
+02:03:19 | DEBUG    | Free port: 43101
+02:03:19 | DEBUG    | Writing on /tmp/ersilia-dkamgr89/serve.sh
+02:03:19 | DEBUG    | #!/bin/bash
+02:03:19 | DEBUG    | bentoml serve eos2r5a:20220628000742_00D2FD --port 43101 &> /tmp/ersilia-dkamgr89/serve.log &
+02:03:19 | DEBUG    | _pid=$!
+02:03:19 | DEBUG    | echo "$_pid" > /tmp/ersilia-dkamgr89/serve.pid
+02:03:19 | DEBUG    | Run command function available
+02:03:20 | DEBUG    | Running on conda environment eos2r5a
+02:03:20 | DEBUG    | Run commandlines on eos2r5a
+02:03:20 | DEBUG    | bash /tmp/ersilia-dkamgr89/serve.sh
+02:03:20 | DEBUG    | Activating base environment
+02:03:20 | DEBUG    | Running bash /tmp/ersilia-17ik5iro/script.sh
+# conda environments:
+#
+base                     /home/mduranfrigola/miniconda3
+DeepPurpose              /home/mduranfrigola/miniconda3/envs/DeepPurpose
+aws                      /home/mduranfrigola/miniconda3/envs/aws
+binddegsapp              /home/mduranfrigola/miniconda3/envs/binddegsapp
+bioassays                /home/mduranfrigola/miniconda3/envs/bioassays
+cudatest                 /home/mduranfrigola/miniconda3/envs/cudatest
+eos0t02                  /home/mduranfrigola/miniconda3/envs/eos0t02
+eos0t03                  /home/mduranfrigola/miniconda3/envs/eos0t03
+eos1af5                  /home/mduranfrigola/miniconda3/envs/eos1af5
+eos1vms                  /home/mduranfrigola/miniconda3/envs/eos1vms
+eos2gth                  /home/mduranfrigola/miniconda3/envs/eos2gth
+eos2hbd                  /home/mduranfrigola/miniconda3/envs/eos2hbd
+eos2r5a               *  /home/mduranfrigola/miniconda3/envs/eos2r5a
+eos2ta5                  /home/mduranfrigola/miniconda3/envs/eos2ta5
+eos2thm                  /home/mduranfrigola/miniconda3/envs/eos2thm
+eos3ae6                  /home/mduranfrigola/miniconda3/envs/eos3ae6
+eos3b5e                  /home/mduranfrigola/miniconda3/envs/eos3b5e
+eos43at                  /home/mduranfrigola/miniconda3/envs/eos43at
+eos4e40                  /home/mduranfrigola/miniconda3/envs/eos4e40
+eos4u6p                  /home/mduranfrigola/miniconda3/envs/eos4u6p
+eos65rt                  /home/mduranfrigola/miniconda3/envs/eos65rt
+eos69p9                  /home/mduranfrigola/miniconda3/envs/eos69p9
+eos6ao8                  /home/mduranfrigola/miniconda3/envs/eos6ao8
+eos6oli                  /home/mduranfrigola/miniconda3/envs/eos6oli
+eos78ao                  /home/mduranfrigola/miniconda3/envs/eos78ao
+eos7a04                  /home/mduranfrigola/miniconda3/envs/eos7a04
+eos7pw8                  /home/mduranfrigola/miniconda3/envs/eos7pw8
+eos7w6n                  /home/mduranfrigola/miniconda3/envs/eos7w6n
+eos8a4x                  /home/mduranfrigola/miniconda3/envs/eos8a4x
+eos8d8a                  /home/mduranfrigola/miniconda3/envs/eos8d8a
+eos8ioa                  /home/mduranfrigola/miniconda3/envs/eos8ioa
+eos92sw                  /home/mduranfrigola/miniconda3/envs/eos92sw
+eos96ia                  /home/mduranfrigola/miniconda3/envs/eos96ia
+eos97yu                  /home/mduranfrigola/miniconda3/envs/eos97yu
+eos9yui                  /home/mduranfrigola/miniconda3/envs/eos9yui
+eosbase-bentoml-0.11.0-py36     /home/mduranfrigola/miniconda3/envs/eosbase-bentoml-0.11.0-py36
+eosbase-bentoml-0.11.0-py37     /home/mduranfrigola/miniconda3/envs/eosbase-bentoml-0.11.0-py37
+eoslitechem              /home/mduranfrigola/miniconda3/envs/eoslitechem
+ersilia                  /home/mduranfrigola/miniconda3/envs/ersilia
+ersiliatest              /home/mduranfrigola/miniconda3/envs/ersiliatest
+esm                      /home/mduranfrigola/miniconda3/envs/esm
+exmol                    /home/mduranfrigola/miniconda3/envs/exmol
+ffwd                     /home/mduranfrigola/miniconda3/envs/ffwd
+gocart                   /home/mduranfrigola/miniconda3/envs/gocart
+grover                   /home/mduranfrigola/miniconda3/envs/grover
+huggingface              /home/mduranfrigola/miniconda3/envs/huggingface
+lambda                   /home/mduranfrigola/miniconda3/envs/lambda
+molbert                  /home/mduranfrigola/miniconda3/envs/molbert
+molbertfeat              /home/mduranfrigola/miniconda3/envs/molbertfeat
+mollib                   /home/mduranfrigola/miniconda3/envs/mollib
+molmap                   /home/mduranfrigola/miniconda3/envs/molmap
+ondiskxy                 /home/mduranfrigola/miniconda3/envs/ondiskxy
+preemi                   /home/mduranfrigola/miniconda3/envs/preemi
+py37                     /home/mduranfrigola/miniconda3/envs/py37
+reinvent                 /home/mduranfrigola/miniconda3/envs/reinvent
+reinvent_shared.v2.1     /home/mduranfrigola/miniconda3/envs/reinvent_shared.v2.1
+sortlibrary              /home/mduranfrigola/miniconda3/envs/sortlibrary
+sow1                     /home/mduranfrigola/miniconda3/envs/sow1
+stylia                   /home/mduranfrigola/miniconda3/envs/stylia
+tab2grid                 /home/mduranfrigola/miniconda3/envs/tab2grid
+test                     /home/mduranfrigola/miniconda3/envs/test
+tf_gpu                   /home/mduranfrigola/miniconda3/envs/tf_gpu
+zairachem                /home/mduranfrigola/miniconda3/envs/zairachem
+zairachem_test           /home/mduranfrigola/miniconda3/envs/zairachem_test
+
+02:03:21 | DEBUG    | Activation done
+02:03:21 | DEBUG    | Process id: 440824
+02:03:21 | DEBUG    | Waiting for file /tmp/ersilia-dkamgr89/serve.log
+02:03:22 | DEBUG    | Waiting for server
+02:03:25 | DEBUG    | URL found: http://127.0.0.1:43101/
+02:03:25 | DEBUG    | Getting session from /home/mduranfrigola/eos/session.json
+02:03:25 | DEBUG    | Reading card from eos2r5a
+02:03:25 | DEBUG    | Input type is: compound
+02:03:25 | DEBUG    | Checking RDKIT and other requirements
+02:03:25 | DEBUG    | File has 3038 lines
+02:03:25 | DEBUG    | Reading card from eos2r5a
+02:03:25 | DEBUG    | Input type is: compound
+02:03:25 | DEBUG    | Checking RDKIT and other requirements
+02:03:25 | DEBUG    | API eos2r5a:predict initialized at URL http://127.0.0.1:43101/
+02:03:25 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:25 | DEBUG    | Posting to predict
+02:03:25 | DEBUG    | Batch size 100
+02:03:25 | DEBUG    | Stopping sniffer for finding delimiter
+02:03:25 | DEBUG    | Stopping sniffer for resolving column types
+02:03:25 | DEBUG    | Has header False
+02:03:25 | DEBUG    | Schema {'input': 0, 'key': None}
+02:03:26 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:26 | DEBUG    | Checking for already available calculations in the data lake
+02:03:26 | DEBUG    | Inspecting 0...
+02:03:26 | DEBUG    | Inspecting 100...
+02:03:26 | DEBUG    | Inspecting 200...
+02:03:26 | DEBUG    | Inspecting 300...
+02:03:26 | DEBUG    | Inspecting 400...
+02:03:26 | DEBUG    | Inspecting 500...
+02:03:26 | DEBUG    | Inspecting 600...
+02:03:26 | DEBUG    | Inspecting 700...
+02:03:26 | DEBUG    | Inspecting 800...
+02:03:26 | DEBUG    | Inspecting 900...
+02:03:26 | DEBUG    | Inspecting 1000...
+02:03:26 | DEBUG    | Inspecting 1100...
+02:03:26 | DEBUG    | Inspecting 1200...
+02:03:26 | DEBUG    | Inspecting 1300...
+02:03:26 | DEBUG    | Inspecting 1400...
+02:03:26 | DEBUG    | Inspecting 1500...
+02:03:26 | DEBUG    | Inspecting 1600...
+02:03:26 | DEBUG    | Inspecting 1700...
+02:03:26 | DEBUG    | Inspecting 1800...
+02:03:26 | DEBUG    | Inspecting 1900...
+02:03:26 | DEBUG    | Inspecting 2000...
+02:03:26 | DEBUG    | Inspecting 2100...
+02:03:26 | DEBUG    | Inspecting 2200...
+02:03:26 | DEBUG    | Inspecting 2300...
+02:03:26 | DEBUG    | Inspecting 2400...
+02:03:26 | DEBUG    | Inspecting 2500...
+02:03:26 | DEBUG    | Inspecting 2600...
+02:03:26 | DEBUG    | Inspecting 2700...
+02:03:26 | DEBUG    | Inspecting 2800...
+02:03:26 | DEBUG    | Inspecting 2900...
+02:03:26 | DEBUG    | Inspecting 3000...
+02:03:26 | DEBUG    | Reading from data well of eos2r5a
+02:03:26 | DEBUG    | Stopping sniffer for finding delimiter
+02:03:26 | DEBUG    | Stopping sniffer for resolving column types
+02:03:26 | DEBUG    | Has header False
+02:03:26 | DEBUG    | Schema {'input': 2, 'key': 1}
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-0.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-1.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-2.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-3.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-4.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-5.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-6.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-7.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-8.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-9.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-10.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-11.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-12.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-13.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-14.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-15.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-16.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-17.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-18.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-19.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-20.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-21.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-22.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-23.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-24.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-25.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-26.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-27.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-28.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-29.json
+02:03:27 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos2r5a/api_schema.json
+02:03:27 | DEBUG    | Working on output: /tmp/ersilia-lfg9kll3/done_output-chunk-30.json
+02:03:27 | DEBUG    | Merging 31 files into /tmp/ersilia-rfd8iidj/done_output.json
+02:03:27 | DEBUG    | Rearranging and returning
+02:03:27 | DEBUG    | Done with unique posting
+02:03:27 | DEBUG    | Cleaning temp dir
+02:03:27 | DEBUG    | Flushing temporary directory /tmp/ersilia-rfd8iidj
+02:03:27 | DEBUG    | Flushing temporary directory /tmp/ersilia-lfg9kll3
+02:03:27 | DEBUG    | Flushing temporary directory /tmp/ersilia-17ik5iro
+02:03:27 | DEBUG    | Flushing temporary directory /tmp/ersilia-dkamgr89
+02:03:27 | DEBUG    | Flushing temporary directory /tmp/ersilia-09lb2ha1
+02:03:27 | DEBUG    | Flushing temporary directory /tmp/ersilia-d8q8riyv
+02:03:27 | DEBUG    | Silencing docker containers if necessary
+02:03:28 | DEBUG    | Closing session /home/mduranfrigola/eos/session.json
+02:03:28 | DEBUG    | Is fetched: True
+02:03:28 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos7pw8/api_schema.json
+02:03:28 | DEBUG    | Setting AutoService for eos7pw8
+02:03:28 | DEBUG    | No service class provided, deciding automatically
+02:03:28 | DEBUG    | Service class file exists in folder /home/mduranfrigola/eos/repository/eos7pw8/20220628001243_1A1196/service_class.txt
+02:03:28 | DEBUG    | Service class: conda
+02:03:28 | DEBUG    | Cleaning temp dir
+02:03:28 | DEBUG    | Silencing docker containers if necessary
+02:03:29 | DEBUG    | Closing session /home/mduranfrigola/eos/session.json
+02:03:29 | DEBUG    | Opening session /home/mduranfrigola/eos/session.json
+02:03:29 | DEBUG    | Cleaning processes before serving
+02:03:29 | DEBUG    | Cleaning [] processes
+02:03:29 | DEBUG    | Cleaning temp dir
+02:03:29 | DEBUG    | Cleaning temp dir
+02:03:29 | DEBUG    | Silencing docker containers if necessary
+02:03:29 | DEBUG    | Trying to serve model with BentoML locally
+02:03:29 | DEBUG    | Free port: 39101
+02:03:29 | DEBUG    | Writing on /tmp/ersilia-dd3n3arp/serve.sh
+02:03:29 | DEBUG    | #!/bin/bash
+02:03:29 | DEBUG    | bentoml serve eos7pw8:20220628001243_1A1196 --port 39101 &> /tmp/ersilia-dd3n3arp/serve.log &
+02:03:29 | DEBUG    | _pid=$!
+02:03:29 | DEBUG    | echo "$_pid" > /tmp/ersilia-dd3n3arp/serve.pid
+02:03:29 | DEBUG    | Run command function available
+02:03:30 | DEBUG    | Running on conda environment eos7pw8
+02:03:30 | DEBUG    | Run commandlines on eos7pw8
+02:03:30 | DEBUG    | bash /tmp/ersilia-dd3n3arp/serve.sh
+02:03:30 | DEBUG    | Activating base environment
+02:03:30 | DEBUG    | Running bash /tmp/ersilia-yavefapi/script.sh
+# conda environments:
+#
+base                     /home/mduranfrigola/miniconda3
+DeepPurpose              /home/mduranfrigola/miniconda3/envs/DeepPurpose
+aws                      /home/mduranfrigola/miniconda3/envs/aws
+binddegsapp              /home/mduranfrigola/miniconda3/envs/binddegsapp
+bioassays                /home/mduranfrigola/miniconda3/envs/bioassays
+cudatest                 /home/mduranfrigola/miniconda3/envs/cudatest
+eos0t02                  /home/mduranfrigola/miniconda3/envs/eos0t02
+eos0t03                  /home/mduranfrigola/miniconda3/envs/eos0t03
+eos1af5                  /home/mduranfrigola/miniconda3/envs/eos1af5
+eos1vms                  /home/mduranfrigola/miniconda3/envs/eos1vms
+eos2gth                  /home/mduranfrigola/miniconda3/envs/eos2gth
+eos2hbd                  /home/mduranfrigola/miniconda3/envs/eos2hbd
+eos2r5a                  /home/mduranfrigola/miniconda3/envs/eos2r5a
+eos2ta5                  /home/mduranfrigola/miniconda3/envs/eos2ta5
+eos2thm                  /home/mduranfrigola/miniconda3/envs/eos2thm
+eos3ae6                  /home/mduranfrigola/miniconda3/envs/eos3ae6
+eos3b5e                  /home/mduranfrigola/miniconda3/envs/eos3b5e
+eos43at                  /home/mduranfrigola/miniconda3/envs/eos43at
+eos4e40                  /home/mduranfrigola/miniconda3/envs/eos4e40
+eos4u6p                  /home/mduranfrigola/miniconda3/envs/eos4u6p
+eos65rt                  /home/mduranfrigola/miniconda3/envs/eos65rt
+eos69p9                  /home/mduranfrigola/miniconda3/envs/eos69p9
+eos6ao8                  /home/mduranfrigola/miniconda3/envs/eos6ao8
+eos6oli                  /home/mduranfrigola/miniconda3/envs/eos6oli
+eos78ao                  /home/mduranfrigola/miniconda3/envs/eos78ao
+eos7a04                  /home/mduranfrigola/miniconda3/envs/eos7a04
+eos7pw8               *  /home/mduranfrigola/miniconda3/envs/eos7pw8
+eos7w6n                  /home/mduranfrigola/miniconda3/envs/eos7w6n
+eos8a4x                  /home/mduranfrigola/miniconda3/envs/eos8a4x
+eos8d8a                  /home/mduranfrigola/miniconda3/envs/eos8d8a
+eos8ioa                  /home/mduranfrigola/miniconda3/envs/eos8ioa
+eos92sw                  /home/mduranfrigola/miniconda3/envs/eos92sw
+eos96ia                  /home/mduranfrigola/miniconda3/envs/eos96ia
+eos97yu                  /home/mduranfrigola/miniconda3/envs/eos97yu
+eos9yui                  /home/mduranfrigola/miniconda3/envs/eos9yui
+eosbase-bentoml-0.11.0-py36     /home/mduranfrigola/miniconda3/envs/eosbase-bentoml-0.11.0-py36
+eosbase-bentoml-0.11.0-py37     /home/mduranfrigola/miniconda3/envs/eosbase-bentoml-0.11.0-py37
+eoslitechem              /home/mduranfrigola/miniconda3/envs/eoslitechem
+ersilia                  /home/mduranfrigola/miniconda3/envs/ersilia
+ersiliatest              /home/mduranfrigola/miniconda3/envs/ersiliatest
+esm                      /home/mduranfrigola/miniconda3/envs/esm
+exmol                    /home/mduranfrigola/miniconda3/envs/exmol
+ffwd                     /home/mduranfrigola/miniconda3/envs/ffwd
+gocart                   /home/mduranfrigola/miniconda3/envs/gocart
+grover                   /home/mduranfrigola/miniconda3/envs/grover
+huggingface              /home/mduranfrigola/miniconda3/envs/huggingface
+lambda                   /home/mduranfrigola/miniconda3/envs/lambda
+molbert                  /home/mduranfrigola/miniconda3/envs/molbert
+molbertfeat              /home/mduranfrigola/miniconda3/envs/molbertfeat
+mollib                   /home/mduranfrigola/miniconda3/envs/mollib
+molmap                   /home/mduranfrigola/miniconda3/envs/molmap
+ondiskxy                 /home/mduranfrigola/miniconda3/envs/ondiskxy
+preemi                   /home/mduranfrigola/miniconda3/envs/preemi
+py37                     /home/mduranfrigola/miniconda3/envs/py37
+reinvent                 /home/mduranfrigola/miniconda3/envs/reinvent
+reinvent_shared.v2.1     /home/mduranfrigola/miniconda3/envs/reinvent_shared.v2.1
+sortlibrary              /home/mduranfrigola/miniconda3/envs/sortlibrary
+sow1                     /home/mduranfrigola/miniconda3/envs/sow1
+stylia                   /home/mduranfrigola/miniconda3/envs/stylia
+tab2grid                 /home/mduranfrigola/miniconda3/envs/tab2grid
+test                     /home/mduranfrigola/miniconda3/envs/test
+tf_gpu                   /home/mduranfrigola/miniconda3/envs/tf_gpu
+zairachem                /home/mduranfrigola/miniconda3/envs/zairachem
+zairachem_test           /home/mduranfrigola/miniconda3/envs/zairachem_test
+
+02:03:31 | DEBUG    | Activation done
+02:03:31 | DEBUG    | Process id: 441255
+02:03:31 | DEBUG    | Waiting for server
+02:03:35 | DEBUG    | URL found: http://127.0.0.1:39101/
+02:03:35 | DEBUG    | Getting session from /home/mduranfrigola/eos/session.json
+02:03:35 | DEBUG    | Reading card from eos7pw8
+02:03:35 | DEBUG    | Input type is: compound
+02:03:35 | DEBUG    | Checking RDKIT and other requirements
+02:03:35 | DEBUG    | File has 3038 lines
+02:03:35 | DEBUG    | Reading card from eos7pw8
+02:03:35 | DEBUG    | Input type is: compound
+02:03:35 | DEBUG    | Checking RDKIT and other requirements
+02:03:35 | DEBUG    | API eos7pw8:predict initialized at URL http://127.0.0.1:39101/
+02:03:35 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos7pw8/api_schema.json
+02:03:35 | DEBUG    | Posting to predict
+02:03:35 | DEBUG    | Batch size 100
+02:03:35 | DEBUG    | Stopping sniffer for finding delimiter
+02:03:35 | DEBUG    | Stopping sniffer for resolving column types
+02:03:35 | DEBUG    | Has header False
+02:03:35 | DEBUG    | Schema {'input': 0, 'key': None}
+02:03:36 | DEBUG    | Schema available in /home/mduranfrigola/eos/dest/eos7pw8/api_schema.json
+02:03:36 | DEBUG    | Checking for already available calculations in the data lake
+02:03:36 | DEBUG    | Inspecting 0...
+02:03:36 | DEBUG    | Inspecting 100...
+02:03:36 | DEBUG    | Inspecting 200...
+02:03:36 | DEBUG    | Inspecting 300...
+02:03:36 | DEBUG    | Inspecting 400...
+02:03:36 | DEBUG    | Inspecting 500...
+02:03:36 | DEBUG    | Inspecting 600...
+02:03:36 | DEBUG    | Inspecting 700...
+02:03:36 | DEBUG    | Inspecting 800...
+02:03:36 | DEBUG    | Inspecting 900...
+02:03:36 | DEBUG    | Inspecting 1000...
+02:03:36 | DEBUG    | Inspecting 1100...
+02:03:36 | DEBUG    | Inspecting 1200...
+02:03:36 | DEBUG    | Inspecting 1300...
+02:03:36 | DEBUG    | Inspecting 1400...
+02:03:36 | DEBUG    | Inspecting 1500...
+02:03:36 | DEBUG    | Inspecting 1600...
+02:03:36 | DEBUG    | Inspecting 1700...
+02:03:36 | DEBUG    | Inspecting 1800...
+02:03:36 | DEBUG    | Inspecting 1900...
+02:03:36 | DEBUG    | Inspecting 2000...
+02:03:36 | DEBUG    | Inspecting 2100...
+02:03:36 | DEBUG    | Inspecting 2200...
+02:03:36 | DEBUG    | Inspecting 2300...
+02:03:36 | DEBUG    | Inspecting 2400...
+02:03:36 | DEBUG    | Inspecting 2500...
+02:03:36 | DEBUG    | Inspecting 2600...
+02:03:36 | DEBUG    | Inspecting 2700...
+02:03:36 | DEBUG    | Inspecting 2800...
+02:03:36 | DEBUG    | Inspecting 2900...
+02:03:36 | DEBUG    | Inspecting 3000...
+02:03:36 | DEBUG    | Calculating using model eos7pw8
+02:03:36 | DEBUG    | Saving in /tmp/ersilia-c9weuitf/todo_output.json
+02:03:36 | DEBUG    | Stopping sniffer for finding delimiter
+02:03:36 | DEBUG    | Stopping sniffer for resolving column types
+02:03:36 | DEBUG    | Has header False
+02:03:36 | DEBUG    | Schema {'input': 2, 'key': 1}
