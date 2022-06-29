@@ -10,7 +10,7 @@ RESULTS_FOLDER = "../../results/"
 
 model_ids = ["eos2r5a", "eos7pw8"]
 
-data_folder = "../../data/generated/reinvent"
+data_folder = "../../data/generated/intermediate"
 
 for input_file in os.listdir(data_folder):
     if not input_file.endswith(".csv"): continue
