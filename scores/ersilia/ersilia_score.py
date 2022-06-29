@@ -3,11 +3,14 @@
 import os
 from ersilia import ErsiliaModel
 
+from rdkit import Chem
+import csv
+
 RESULTS_FOLDER = "../../results/"
 
 model_ids = ["eos2r5a", "eos7pw8"]
 
-data_folder = "../../data/generated/zairachem"
+data_folder = "../../data/generated/reinvent"
 
 for input_file in os.listdir(data_folder):
     if not input_file.endswith(".csv"): continue
@@ -17,7 +20,23 @@ for input_file in os.listdir(data_folder):
         if os.path.exists(output_file):
             continue
         print(input_file, output_file)
+        with open(input_file, "r") as f:
+            smiles = []
+            reader = csv.reader(f)
+            for r in reader:
+                mol = Chem.MolFromSmiles(r[0])
+                if mol is not None:
+                    smiles += [r[0]]
+                else:
+                    smiles += ["CCCCOCCCC"]
+        with open("tmp.csv", "w") as f:
+            writer = csv.writer(f)
+            for smi in smiles:
+                writer.writerow([smi])
         em = ErsiliaModel(model=model_id)
         em.serve()
-        em.api(input=input_file, output=output_file)
+        em.api(input="tmp.csv", output=output_file)
         em.close()
+
+
+os.remove("tmp.csv")
