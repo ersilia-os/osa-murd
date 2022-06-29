@@ -9,9 +9,10 @@ from rdkit.Chem.QED import qed
 from rdkit.Chem import Descriptors
 
 RESULTS_FOLDER = "../../results/"
-data_folder = "../../data/generated/zairachem"
+data_folder = "../../data/generated/reinvent"
 
 for input_file in os.listdir(data_folder):
+    if not input_file.endswith(".csv"): continue
     output_file = os.path.join(RESULTS_FOLDER, "other-{0}".format(input_file))
     if os.path.exists(output_file):
         continue
@@ -23,7 +24,10 @@ for input_file in os.listdir(data_folder):
     mols = [Chem.MolFromSmiles(smi) for smi in smiles]
     R = []
     for mol, smi in zip(mols, smiles):
-        ik = Chem.MolToInchiKey(mol)
-        R += [[ik, smi, Descriptors.MolWt(mol), MolLogP(mol), qed(mol)]]
+        if mol is not None:
+            ik = Chem.MolToInchiKey(mol)
+            R += [[ik, smi, Descriptors.MolWt(mol), MolLogP(mol), qed(mol)]]
+        else:
+            R += [["", "", "", "", ""]]
     df = pd.DataFrame(R, columns=["key", "input", "mw", "clogp", "qed"])
     df.to_csv(output_file, index=False, sep=",")
