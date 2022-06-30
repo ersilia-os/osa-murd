@@ -1,5 +1,5 @@
 ,title,docking scores,smiles,ph4_matches,commercial
-0,3-1812,-29.066,NC(=O)c1ccc2nc(C3CCN(Cc4ccccc4)C3)oc2c1,4.0,1.0
+0,3-1812,-29.066,NC(=O)c1ccc2nc(C3CCN(Cc4ccccc4)C3)oc2c1,4.0,1.0,eMolecules
 1,16-9738,-25.8029,Cc1ccc(NC(=O)CSc2ncc(C(N)=O)cc2Cl)cc1,4.0,
 2,20-5140,-24.8702,O=C(Cn1nc2c(cc1=O)CCc1ccccc1-2)Nc1ccccc1,4.0,
 3,13-1273,-24.8023,O=C(NC1CCS(=O)(=O)C1)c1ccn(-c2ccccc2Cl)n1,4.0,1.0
