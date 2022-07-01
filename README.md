@@ -16,6 +16,10 @@ The target is the bacterial enzyme [MurD](https://github.com/opensourceantibioti
 * [Atomwise predictions](https://github.com/opensourceantibiotics/murligase/tree/master/Atomwise) of binding to the 3UAG structure (see OSA issue [#33](https://github.com/opensourceantibiotics/murligase/issues/33)).
 * Crystal structures of some of Atomwise predictions, but [bound to a related protein, MurE](https://github.com/opensourceantibiotics/murligase/wiki/XChem-EcMurE-Atomwise-library-1).
 
-### From other sources
+## Results
 
-## Our approach
+Our suggested molecules can be found in the Open Source Antibiotics GitHub page, issue [#76](https://github.com/opensourceantibiotics/murligase/issues/79)
+
+## About us
+
+This work is the result of a collaboration between the [Structural Bioinformatics and Network Biology Laboratory](https://sbnb.irbbarcelona.org), at IRB Barcelona and the [Ersilia Open Source Initiative](https://ersilia.io). 
