@@ -4,7 +4,7 @@ Open Source Antibiotics MurD ligands based on generative models.
 This repository contains scripts and data used to produce MurD ligand candidates for Open Source Antibiotics (OSA), as described in issue [#69](https://github.com/opensourceantibiotics/murligase/issues/69). Most information realted to MurD can be found in the corresponding [murligase](https://github.com/opensourceantibiotics/murligase) OSA repository.
 
 ## The challenge
-The target is the bacterial enzyme [MurD](https://github.com/opensourceantibiotics/murligase/wiki). We have been asked to take existing crystal structures of MurD and generate novel small molecules tha tbind to an allosteric pocket.
+The target is the bacterial enzyme [MurD](https://github.com/opensourceantibiotics/murligase/wiki). We have been asked to take existing crystal structures of MurD and generate novel small molecules that bind to an allosteric pocket.
 
 ## Available data
 
@@ -18,7 +18,10 @@ The target is the bacterial enzyme [MurD](https://github.com/opensourceantibioti
 
 ## Results
 
-Our suggested molecules can be found in the Open Source Antibiotics GitHub page, issue [#76](https://github.com/opensourceantibiotics/murligase/issues/79)
+Our suggested molecules can be found in the Open Source Antibiotics GitHub page, issue [#76](https://github.com/opensourceantibiotics/murligase/issues/79). Additionally, we have generated a [Molecular Cloud](https://github.com/whitead/molcloud) made up by our candidate molecules:
+
+![molecular cloud](https://user-images.githubusercontent.com/80755454/177553868-bb44f903-73c1-42b8-a6c1-81b887c3ff93.jpeg)
+
 
 ## About us
 
